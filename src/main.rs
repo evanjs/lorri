@@ -10,7 +10,6 @@ use lorri::project::Project;
 use lorri::NixFile;
 use slog::{debug, error, o};
 use slog_scope::GlobalLoggerGuard;
-use std::option_env;
 use std::path::PathBuf;
 use structopt::StructOpt;
 
