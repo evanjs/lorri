@@ -10,6 +10,7 @@ use lorri::project::Project;
 use lorri::NixFile;
 use slog::{debug, error, o};
 use slog_scope::GlobalLoggerGuard;
+use std::option_env;
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -111,7 +112,11 @@ fn run_command(log: slog::Logger, opts: Arguments) -> OpResult {
         }
         Command::Init => {
             let _guard = without_project();
-            init::main(TRIVIAL_SHELL_SRC, DEFAULT_ENVRC)
+            // check for TRIVIAL_SHELL_SRC in env, first
+            // use the environment variable if it exists
+            // otherwise, use the existing TRIVIAL_SHELL_SRC value
+            let shell_file = option_env!("TRIVIAL_SHELL_SRC").unwrap_or(TRIVIAL_SHELL_SRC);
+            init::main(shell_file, DEFAULT_ENVRC)
         }
 
         Command::Internal { command } => match command {
